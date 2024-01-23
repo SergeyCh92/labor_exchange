@@ -7,7 +7,7 @@ from src.dependencies.database import get_session
 from src.queries import user as user_queries
 
 
-async def get_current_user(db: AsyncSession = Depends(get_session), token: str = Depends(JWTBearer())) -> User:
+async def get_current_user(session: AsyncSession = Depends(get_session), token: str = Depends(JWTBearer())) -> User:
     cred_exception = HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Credentials are not valid")
     payload = decode_access_token(token)
     if payload is None:
@@ -15,7 +15,7 @@ async def get_current_user(db: AsyncSession = Depends(get_session), token: str =
     email: str = payload.get("sub")
     if email is None:
         raise cred_exception
-    user = await user_queries.get_by_email(session=db, email=email)
+    user = await user_queries.get_by_email(session=session, email=email)
     if user is None:
         raise cred_exception
     return user

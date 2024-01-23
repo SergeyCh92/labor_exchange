@@ -2,8 +2,8 @@ from src.database.engine import SessionLocal
 
 
 async def get_session():
-    db = SessionLocal()
+    session = SessionLocal()
     try:
-        yield db
+        yield session
     finally:
-        await db.close()
+        await session.close()
