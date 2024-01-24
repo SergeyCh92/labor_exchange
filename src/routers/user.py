@@ -1,11 +1,9 @@
 import logging
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends, Response, status
 
 from src.database.tables import User
 from src.dependencies import get_current_user, get_user_service
-from src.queries import user as user_queries
 from src.schemas import UpdateUserSchema, UserInSchema, UserSchema
 from src.services import UserService
 
