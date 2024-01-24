@@ -1,7 +1,7 @@
-from pydantic import BaseModel
+from src.schemas.base import BaseSchema
 
 
-class responseSchema(BaseModel):
+class ResponseSchema(BaseSchema):
     id: int
     job_id: int
     user_id: int

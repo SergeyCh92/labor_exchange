@@ -1,10 +1,7 @@
-from pydantic import BaseModel
+from src.schemas.base import BaseSchema
 
 
-class jobSchema(BaseModel):
-    class Config:
-        orm_mode = True
-
+class JobSchema(BaseSchema):
     id: int | None = None
     user_id: int
     title: str | None = None

@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.security import hash_password
 from src.database.tables import User
-from src.schemas import userInSchema
+from src.schemas import UserInSchema
 
 
 async def get_all_users(session: AsyncSession, limit: int = 100, skip: int = 0) -> list[User]:
@@ -20,7 +20,7 @@ async def get_by_id(id: int, session: AsyncSession, lock: bool = False) -> User 
     return res.scalar()
 
 
-async def create(session: AsyncSession, user_schema: userInSchema):
+async def create(session: AsyncSession, user_schema: UserInSchema):
     user = User(
         name=user_schema.name,
         email=user_schema.email,

@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Response, status
 
 from src.database.tables import User
 from src.dependencies import get_current_user, get_job_service
-from src.schemas.job import jobSchema
+from src.schemas.job import JobSchema
 from src.services import JobService
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 @router.post("/job", response_class=Response)
 async def create_job(
-    job_schema: jobSchema,
+    job_schema: JobSchema,
     job_service: JobService = Depends(get_job_service),
     current_user: User = Depends(get_current_user),
 ):
@@ -22,7 +22,7 @@ async def create_job(
     return Response(status_code=status.HTTP_201_CREATED)
 
 
-@router.get("/jobs", response_model=list[jobSchema])
+@router.get("/jobs", response_model=list[JobSchema])
 async def get_jobs(
     limit: int = 100,
     skip: int = 0,
@@ -35,7 +35,7 @@ async def get_jobs(
     return results
 
 
-@router.get("/job/{id}", response_model=jobSchema)
+@router.get("/job/{id}", response_model=JobSchema)
 async def get_job(
     id: int, job_service: JobService = Depends(get_job_service), current_user: User = Depends(get_current_user)
 ):
@@ -48,7 +48,7 @@ async def get_job(
 @router.put("/job/{job_id}", response_class=Response)
 async def update_job(
     job_id: int,
-    job_schema: jobSchema,
+    job_schema: JobSchema,
     job_service: JobService = Depends(get_job_service),
     current_user: User = Depends(get_current_user),
 ):

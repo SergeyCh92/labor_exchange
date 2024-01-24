@@ -2,10 +2,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.tables import Job
-from src.schemas.job import jobSchema
+from src.schemas.job import JobSchema
 
 
-async def create_new_job(job_schema: jobSchema, session: AsyncSession):
+async def create_new_job(job_schema: JobSchema, session: AsyncSession):
     job = Job(
         user_id=job_schema.user_id,
         title=job_schema.title,
@@ -32,7 +32,7 @@ async def get_job_by_id(id: int, session: AsyncSession, lock: bool = False) -> J
     return res.scalar()
 
 
-async def update_job_by_id(session: AsyncSession, old_job: Job, new_job: jobSchema):
+async def update_job_by_id(session: AsyncSession, old_job: Job, new_job: JobSchema):
     old_job.id = new_job.id if new_job.id is not None else old_job.id
     old_job.title = new_job.title if new_job.title else old_job.title
     old_job.description = new_job.description if new_job.description else old_job.description
