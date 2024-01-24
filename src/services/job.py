@@ -3,14 +3,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 import src.queries.job as job_queries
 from src.database.tables import Job, User
-from src.schemas.job import JobSchema
+from src.schemas.job import jobSchema
 
 
 class JobService:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_job(self, job_schema: JobSchema, current_user: User):
+    async def create_job(self, job_schema: jobSchema, current_user: User):
         self.check_is_company(
             current_user.is_company, "Вы не можете обновлять вакансии, т.к. являетесь физическим лицом."
         )
@@ -26,7 +26,7 @@ class JobService:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Вакансия не найдена.")
         return result
 
-    async def update_job(self, job_id: int, job_schema: JobSchema, current_user: User):
+    async def update_job(self, job_id: int, job_schema: jobSchema, current_user: User):
         self.check_is_company(
             current_user.is_company, "Вы не можете обновлять вакансии, т.к. являетесь физическим лицом."
         )

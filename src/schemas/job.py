@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class JobSchema(BaseModel):
+class jobSchema(BaseModel):
     class Config:
         orm_mode = True
 

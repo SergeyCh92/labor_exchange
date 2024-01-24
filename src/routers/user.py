@@ -4,14 +4,14 @@ from fastapi import APIRouter, Depends, Response, status
 
 from src.database.tables import User
 from src.dependencies import get_current_user, get_user_service
-from src.schemas import UpdateUserSchema, UserInSchema, UserSchema
+from src.schemas import updateUserSchema, userInSchema, userSchema
 from src.services import UserService
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 
 # добавил get_current_user, чтобы запретить получать данные о пользователях незарегистрированным юзерам
-@router.get("/users", response_model=list[UserSchema])
+@router.get("/users", response_model=list[userSchema])
 async def get_users(
     limit: int = 100,
     skip: int = 0,
@@ -25,7 +25,7 @@ async def get_users(
 
 
 @router.post("/user", response_class=Response)
-async def create_user(user_schema: UserInSchema, user_service: UserService = Depends(get_user_service)):
+async def create_user(user_schema: userInSchema, user_service: UserService = Depends(get_user_service)):
     logging.info("request has been received to create a new user")
     await user_service.create_user(user_schema=user_schema)
     logging.info("the user has been successfully created")
@@ -38,7 +38,7 @@ async def create_user(user_schema: UserInSchema, user_service: UserService = Dep
 @router.put("/user/{user_id}", response_class=Response)
 async def update_user(
     user_id: int,
-    update_user_schema: UpdateUserSchema,
+    update_user_schema: updateUserSchema,
     user_service: UserService = Depends(get_user_service),
     current_user: User = Depends(get_current_user),
 ):
@@ -48,7 +48,7 @@ async def update_user(
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.get("/user/{user_id}", response_model=UserSchema)
+@router.get("/user/{user_id}", response_model=userSchema)
 async def get_user(
     user_id: int, user_service: UserService = Depends(get_user_service), current_user: User = Depends(get_current_user)
 ):

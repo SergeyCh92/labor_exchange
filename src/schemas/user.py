@@ -3,7 +3,7 @@ import datetime
 from pydantic import BaseModel, EmailStr, validator
 
 
-class UserSchema(BaseModel):
+class userSchema(BaseModel):
     class Config:
         orm_mode = True
 
@@ -16,13 +16,13 @@ class UserSchema(BaseModel):
     created_at: datetime.datetime
 
 
-class UpdateUserSchema(BaseModel):
+class updateUserSchema(BaseModel):
     name: str | None = None
     email: EmailStr | None = None
     is_company: bool | None = None
 
 
-class UserInSchema(BaseModel):
+class userInSchema(BaseModel):
     name: str
     email: EmailStr
     password: str
