@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 def to_camel_case(snake_str):
-    return "".join(x.capitalize() for x in snake_str.lower().split("_"))
+    return "".join(word.capitalize() for word in snake_str.lower().split("_"))
 
 
 def to_lower_camel_case(snake_str):
