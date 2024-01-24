@@ -8,8 +8,8 @@ from src.schemas import UserInSchema
 
 async def get_all_users(session: AsyncSession, limit: int = 100, skip: int = 0) -> list[User]:
     query = select(User).limit(limit).offset(skip)
-    res = await session.execute(query)
-    return res.scalars().all()
+    results = await session.execute(query)
+    return results.scalars().all()
 
 
 async def get_by_id(id: int, session: AsyncSession, lock: bool = False) -> User | None:
