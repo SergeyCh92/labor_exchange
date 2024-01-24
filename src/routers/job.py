@@ -10,7 +10,7 @@ from src.services import JobService
 router = APIRouter(prefix="/jobs", tags=["jobs"])
 
 
-@router.post("/create_job", response_class=Response)
+@router.post("/job", response_class=Response)
 async def create_job(
     job_schema: JobSchema,
     job_service: JobService = Depends(get_job_service),
@@ -22,7 +22,7 @@ async def create_job(
     return Response(status_code=status.HTTP_201_CREATED)
 
 
-@router.get("/get_jobs", response_model=list[JobSchema])
+@router.get("/jobs", response_model=list[JobSchema])
 async def get_jobs(
     limit: int = 100,
     skip: int = 0,
@@ -35,7 +35,7 @@ async def get_jobs(
     return results
 
 
-@router.get("/get_job/{id}", response_model=JobSchema)
+@router.get("/job/{id}", response_model=JobSchema)
 async def get_job(
     id: int, job_service: JobService = Depends(get_job_service), current_user: User = Depends(get_current_user)
 ):
@@ -45,7 +45,7 @@ async def get_job(
     return job
 
 
-@router.put("/update_job/{job_id}", response_class=Response)
+@router.put("/job/{job_id}", response_class=Response)
 async def update_job(
     job_id: int,
     job_schema: JobSchema,
