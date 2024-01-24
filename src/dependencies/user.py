@@ -5,9 +5,12 @@ from src.core.security import JWTBearer, decode_access_token
 from src.database.tables import User
 from src.dependencies.database import get_session
 from src.queries import user as user_queries
+from src.schemas import UserSchema
 
 
-async def get_current_user(session: AsyncSession = Depends(get_session), token: str = Depends(JWTBearer())) -> User:
+async def get_current_user(
+    session: AsyncSession = Depends(get_session), token: str = Depends(JWTBearer())
+) -> UserSchema:
     cred_exception = HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Credentials are not valid")
     payload = decode_access_token(token)
     if payload is None:
@@ -18,4 +21,4 @@ async def get_current_user(session: AsyncSession = Depends(get_session), token: 
     user = await user_queries.get_by_email(session=session, email=email)
     if user is None:
         raise cred_exception
-    return user
+    return UserSchema.from_orm(user)

@@ -6,7 +6,7 @@ from src.schemas.base import BaseSchema
 
 
 class UserSchema(BaseSchema):
-    id: str | None = None
+    id: int | None = None
     name: str
     email: EmailStr
     # не стоит отправлять хэш пароля, если он все-таки где-то понадобится, можно

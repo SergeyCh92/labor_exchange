@@ -2,7 +2,6 @@ import logging
 
 from fastapi import APIRouter, Depends, Response, status
 
-from src.database.tables import User
 from src.dependencies import get_current_user, get_user_service
 from src.schemas import UpdateUserSchema, UserInSchema, UserSchema
 from src.services import UserService
@@ -16,7 +15,7 @@ async def get_users(
     limit: int = 100,
     skip: int = 0,
     user_service: UserService = Depends(get_user_service),
-    current_user: User = Depends(get_current_user),
+    current_user: UserSchema = Depends(get_current_user),
 ):
     logging.info(f"request was received to receive {limit} users, offset {skip}")
     results = await user_service.get_users(limit=limit, skip=skip)
@@ -40,7 +39,7 @@ async def update_user(
     user_id: int,
     update_user_schema: UpdateUserSchema,
     user_service: UserService = Depends(get_user_service),
-    current_user: User = Depends(get_current_user),
+    current_user: UserSchema = Depends(get_current_user),
 ):
     logging.info(f"a request was received to update user id {user_id} data")
     await user_service.update_user(user_id=user_id, update_user_schema=update_user_schema, current_user=current_user)
@@ -50,7 +49,9 @@ async def update_user(
 
 @router.get("/user/{user_id}", response_model=UserSchema)
 async def get_user(
-    user_id: int, user_service: UserService = Depends(get_user_service), current_user: User = Depends(get_current_user)
+    user_id: int,
+    user_service: UserService = Depends(get_user_service),
+    current_user: UserSchema = Depends(get_current_user),
 ):
     logging.info(f"data on the {id} id user has been requested")
     user = await user_service.get_user(user_id=user_id)
