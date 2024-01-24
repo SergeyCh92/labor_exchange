@@ -16,7 +16,7 @@ class UserSchema(BaseModel):
     created_at: datetime.datetime
 
 
-class UserUpdateSchema(BaseModel):
+class UpdateUserSchema(BaseModel):
     name: str | None = None
     email: EmailStr | None = None
     is_company: bool | None = None
