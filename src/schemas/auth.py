@@ -1,11 +1,11 @@
 from pydantic import BaseModel, EmailStr
 
 
-class TokenSchema(BaseModel):
+class tokenSchema(BaseModel):
     access_token: str
     token_type: str
 
 
-class LoginSchema(BaseModel):
+class loginSchema(BaseModel):
     email: EmailStr
     password: str
