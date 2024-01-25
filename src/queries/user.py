@@ -16,8 +16,8 @@ async def get_by_id(id: int, session: AsyncSession, lock: bool = False) -> User 
     query = select(User).where(User.id == id)
     if lock:
         query = query.with_for_update(nowait=False)
-    res = await session.execute(query)
-    return res.scalar()
+    result = await session.execute(query)
+    return result.scalar()
 
 
 async def create(session: AsyncSession, user_schema: UserInSchema):
@@ -45,6 +45,13 @@ async def update(session: AsyncSession, old_user: User, new_user: User):
 
 async def get_by_email(session: AsyncSession, email: str) -> User | None:
     query = select(User).where(User.email == email)
-    res = await session.execute(query)
-    user = res.scalar()
+    result = await session.execute(query)
+    user = result.scalar_one_or_none()
+    return user
+
+
+async def get_user_by_hashed_refresh_token(session: AsyncSession, hashed_refresh_token: str) -> User | None:
+    query = select(User).where(User.hashed_refresh_token == hashed_refresh_token)
+    result = await session.execute(query)
+    user = result.scalar_one_or_none()
     return user

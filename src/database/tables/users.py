@@ -17,6 +17,7 @@ class User(Base):
     created_at = sa.Column(
         sa.DateTime, comment="Время создания записи", server_default=sa.text("TIMEZONE('utc', now())"), nullable=False
     )
+    hashed_refresh_token = sa.Column(sa.String, comment="Хэш refresh-токена")
 
     jobs = relationship("Job", back_populates="user")
     responses = relationship("Response", back_populates="user")

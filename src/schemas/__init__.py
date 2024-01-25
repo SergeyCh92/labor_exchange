@@ -1,4 +1,4 @@
-from .auth import LoginSchema, TokenSchema
+from .auth import LoginSchema, RefreshTokenSchema, TokenSchema
 from .base import BaseSchema
 from .job import JobSchema
 from .response import ResponseCreateSchema, ResponseSchema
