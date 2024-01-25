@@ -10,7 +10,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 
 # добавил get_current_user, чтобы запретить получать данные о пользователях незарегистрированным юзерам
-@router.get("/users", response_model=list[UserSchema])
+@router.get("", response_model=list[UserSchema])
 async def get_users(
     limit: int = 100,
     skip: int = 0,
@@ -53,7 +53,17 @@ async def get_user(
     user_service: UserService = Depends(get_user_service),
     current_user: UserSchema = Depends(get_current_user),
 ):
-    logging.info(f"data on the {id} id user has been requested")
+    logging.info(f"data on the {user_id} id user has been requested")
     user = await user_service.get_user(user_id=user_id)
-    logging.info(f"the data on the user {id} id has been received")
+    logging.info(f"the data on the user {user_id} id has been received")
     return user
+
+
+@router.delete("/user", response_class=Response)
+async def delete_user(
+    user_service: UserService = Depends(get_user_service), current_user: UserSchema = Depends(get_current_user)
+):
+    logging.info(f"the request was received to delete user id {current_user}")
+    await user_service.delete_user(user_id=current_user.id)
+    logging.info(f"the data of the user id {current_user.id} has been deleted")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

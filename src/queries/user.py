@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.security import hash_password
@@ -55,3 +55,9 @@ async def get_user_by_hashed_refresh_token(session: AsyncSession, hashed_refresh
     result = await session.execute(query)
     user = result.scalar_one_or_none()
     return user
+
+
+async def delete_user_by_id(session: AsyncSession, user_id: int):
+    query = delete(User).where(User.id == user_id)
+    await session.execute(query)
+    await session.commit()

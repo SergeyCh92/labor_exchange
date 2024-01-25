@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.tables import Job
@@ -41,4 +41,10 @@ async def update_job_by_id(session: AsyncSession, old_job: Job, new_job: JobSche
     old_job.is_active = new_job.is_active
 
     session.add(old_job)
+    await session.commit()
+
+
+async def delete_job_by_id(job_id: int, session: AsyncSession):
+    query = delete(Job).where(Job.id == job_id)
+    await session.execute(query)
     await session.commit()

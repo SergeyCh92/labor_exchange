@@ -27,6 +27,9 @@ class UserService:
         self.check_user_is_correct(old_user=user)
         return user
 
+    async def delete_user(self, user_id: int):
+        await user_queries.delete_user_by_id(session=self.session, user_id=user_id)
+
     @staticmethod
     def check_user_is_correct(old_user: User | None, current_user: User | None = None):
         raise_exception = False

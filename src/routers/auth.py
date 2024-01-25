@@ -19,5 +19,7 @@ async def login(login: LoginSchema, auth_service: AuthService = Depends(get_auth
 
 @router.post("/refresh_token", response_model=TokenSchema)
 async def refresh_token(refresh_token: RefreshTokenSchema, auth_service: AuthService = Depends(get_auth_service)):
+    logging.info("the request for a refresh token has been received")
     token = await auth_service.refresh_token_schema(refresh_token=refresh_token.token)
+    logging.info("the token has been successfully updated")
     return token
