@@ -6,12 +6,7 @@ from src.settings.database import DataBaseSettings
 
 settings = DataBaseSettings()
 
-
-SQLALCHEMY_DATABASE_URL = (
-    f"postgresql+asyncpg://{settings.user}:{settings.password}@{settings.host}:{settings.port}/{settings.name}"
-)
-
-engine = create_async_engine(SQLALCHEMY_DATABASE_URL, echo=settings.echo)
+engine = create_async_engine(settings.dsn, echo=settings.echo)
 
 SessionLocal = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine, class_=AsyncSession))
 

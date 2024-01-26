@@ -10,3 +10,7 @@ class DataBaseSettings(BaseSettings):
     name: str = Field(env="DB_NAME", default="labor-exchange")
     port: int = Field(env="DB_PORT", default=8503)
     echo: bool = Field(env="DB_ECHO", default=False)
+
+    @property
+    def dsn(self) -> str:
+        return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"

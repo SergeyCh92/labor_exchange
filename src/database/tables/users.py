@@ -17,6 +17,8 @@ class User(Base):
     created_at = sa.Column(
         sa.DateTime, comment="Время создания записи", server_default=sa.text("TIMEZONE('utc', now())"), nullable=False
     )
+    # лучше конечно использовать redis для хранения refresh-токена: займет
+    # меньше времени по сравнению с запросом в базу
     hashed_refresh_token = sa.Column(sa.String, comment="Хэш refresh-токена")
 
     jobs = relationship("Job", back_populates="user")

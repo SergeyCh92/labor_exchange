@@ -31,7 +31,7 @@ def create_refresh_token() -> str:
     return jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
 
 
-def decode_token(token: str) -> dict[str, str | int]:
+def decode_token(token: str) -> dict[str, str | int] | None:
     try:
         encoded_jwt = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
     except jwt.JWSError:
