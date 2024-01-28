@@ -21,7 +21,7 @@ async def create_response(
     return Response(status_code=status.HTTP_201_CREATED)
 
 
-@router.get("/responses/{job_id}", response_model=list[ResponseSchema])
+@router.get("/{job_id}", response_model=list[ResponseSchema])
 async def get_responses(
     job_id: int,
     response_service: ResponseService = Depends(get_response_service),

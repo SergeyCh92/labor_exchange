@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.security import hash_password
 from src.database.tables import User
-from src.schemas import UserInSchema
+from src.schemas import UpdateUserSchema, UserInSchema
 
 
 async def get_all_users(session: AsyncSession, limit: int = 100, skip: int = 0) -> list[User]:
@@ -34,7 +34,7 @@ async def create(session: AsyncSession, user_schema: UserInSchema):
     await session.commit()
 
 
-async def update(session: AsyncSession, old_user: User, new_user: User):
+async def update(session: AsyncSession, old_user: User, new_user: UpdateUserSchema):
     old_user.name = new_user.name if new_user.name is not None else old_user.name
     old_user.email = new_user.email if new_user.email is not None else old_user.email
     old_user.is_company = new_user.is_company if new_user.is_company is not None else old_user.is_company
