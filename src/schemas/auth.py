@@ -1,11 +1,18 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import EmailStr
+
+from src.schemas.base import BaseSchema
 
 
-class TokenSchema(BaseModel):
+class TokenSchema(BaseSchema):
     access_token: str
-    token_type: str
+    refresh_token: str
+    token_type: str = "Bearer"
 
 
-class LoginSchema(BaseModel):
+class LoginSchema(BaseSchema):
     email: EmailStr
     password: str
+
+
+class RefreshTokenSchema(BaseSchema):
+    token: str

@@ -1,23 +1,25 @@
-from fastapi import APIRouter, HTTPException, status, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from queries import user as user_queries
+import logging
 
-from schemas import TokenSchema, LoginSchema
-from core.security import verify_password, create_access_token
-from dependencies import get_db
+from fastapi import APIRouter, Depends
 
+from src.dependencies import get_auth_service
+from src.schemas import LoginSchema, RefreshTokenSchema, TokenSchema
+from src.services import AuthService
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("", response_model=TokenSchema)
-async def login(login: LoginSchema, db: AsyncSession = Depends(get_db)):
-    user = await user_queries.get_by_email(db=db, email=login.email)
+@router.post("/login", response_model=TokenSchema)
+async def login(login: LoginSchema, auth_service: AuthService = Depends(get_auth_service)):
+    logging.info(f"authentication request for the user {login.email}")
+    token = await auth_service.get_token_schema(login)
+    logging.info(f"user {login.email} has successfully authenticated")
+    return token
 
-    if user is None or not verify_password(login.password, user.hashed_password):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Некорректное имя пользователя или пароль")
 
-    return TokenSchema(
-        access_token=create_access_token({"sub": user.email}),
-        token_type="Bearer"
-    )
+@router.post("/refresh_token", response_model=TokenSchema)
+async def refresh_token(refresh_token: RefreshTokenSchema, auth_service: AuthService = Depends(get_auth_service)):
+    logging.info("the request for a refresh token has been received")
+    token = await auth_service.refresh_token_schema(refresh_token=refresh_token.token)
+    logging.info("the token has been successfully updated")
+    return token
